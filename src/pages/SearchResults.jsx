@@ -13,8 +13,13 @@ const SearchResults = ({ query, onBack }) => {
     })
 
     const filteredResults = mockData.filter(item => {
-        const matchesQuery = item.title.toLowerCase().includes(query.toLowerCase()) ||
-            item.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+        const queryLower = query.toLowerCase()
+        const searchTerms = queryLower.split(' ').filter(term => term.length > 0)
+        const itemContent = `${item.title} ${item.category} ${item.type} ${item.tags.join(' ')}`.toLowerCase()
+
+        // Match if query is contained in content OR any word matches
+        const matchesQuery = itemContent.includes(queryLower) ||
+            searchTerms.some(term => itemContent.includes(term))
 
         const matchesCategory = filters.category === 'All' || item.category === filters.category
         const matchesLevel = filters.level === 'All' || item.level === filters.level
@@ -27,22 +32,38 @@ const SearchResults = ({ query, onBack }) => {
         const fetchWikiDetail = async () => {
             if (filteredResults.length === 0 && query.trim()) {
                 setIsLoadingWiki(true)
-                setWikiError(null)
-                try {
-                    const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`)
-                    if (response.ok) {
-                        const data = await response.json()
-                        setWikiResult(data)
-                    } else {
-                        setWikiResult(null)
-                        setWikiError("No Wikipedia entry found.")
+                setWikiResult(null)
+
+                // Try several query variations for Wikipedia
+                const searchQueries = [
+                    query,
+                    query.split(' ')[0], // First word
+                    query.replace(/\s+/g, '_') // Underscored
+                ]
+
+                let successfulData = null
+                for (const q of searchQueries) {
+                    try {
+                        const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(q)}`)
+                        if (response.ok) {
+                            const data = await response.json()
+                            if (data.type === 'standard') {
+                                successfulData = data
+                                break
+                            }
+                        }
+                    } catch (err) {
+                        continue
                     }
-                } catch (err) {
-                    setWikiError("Failed to fetch educational context.")
-                    setWikiResult(null)
-                } finally {
-                    setIsLoadingWiki(false)
                 }
+
+                if (successfulData) {
+                    setWikiResult(successfulData)
+                } else {
+                    setWikiResult(null)
+                    setWikiError("No content found.")
+                }
+                setIsLoadingWiki(false)
             } else {
                 setWikiResult(null)
             }
