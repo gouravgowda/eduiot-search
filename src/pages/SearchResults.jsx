@@ -15,7 +15,7 @@ const SearchResults = ({ query, onBack }) => {
     const filteredResults = mockData.filter(item => {
         const queryLower = query.toLowerCase()
         const searchTerms = queryLower.split(' ').filter(term => term.length > 0)
-        const itemContent = `${item.title} ${item.category} ${item.type} ${item.tags.join(' ')}`.toLowerCase()
+        const itemContent = `${item.title} ${item.category} ${item.type} ${item.level} ${item.description} ${item.tags.join(' ')}`.toLowerCase()
 
         // Match if query is contained in content OR any word matches
         const matchesQuery = itemContent.includes(queryLower) ||
