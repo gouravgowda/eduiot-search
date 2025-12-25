@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import WhyEduIoT from './components/WhyEduIoT'
@@ -31,21 +32,35 @@ const Features = () => {
   ]
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-32 bg-white relative">
       <div className="section-container">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Core Features</h2>
-          <div className="w-20 h-1.5 bg-primary-600 mx-auto rounded-full" />
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-20"
+        >
+          <h2 className="heading-xl text-3xl md:text-5xl mb-6">Revolutionizing <span className="text-gradient">Technical Search</span></h2>
+          <p className="text-slate-500 text-lg font-medium">Built with student success in mind.</p>
+        </motion.div>
+
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((f, i) => (
-            <div key={i} className="group p-8 rounded-3xl border border-slate-100 hover:border-primary-100 hover:shadow-2xl hover:shadow-primary-100/20 transition-all bg-white">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-slate-50 group-hover:bg-primary-50 transition-colors`}>
-                <f.icon className="w-6 h-6 text-primary-600" />
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              whileHover={{ y: -5 }}
+              className="group p-10 rounded-[2.5rem] border border-slate-50 hover:border-primary-100 hover:shadow-2xl hover:shadow-primary-100/20 transition-all bg-white"
+            >
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 bg-slate-50 group-hover:bg-primary-50 transition-colors">
+                <f.icon className="w-8 h-8 text-primary-600" />
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">{f.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{f.desc}</p>
-            </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4 font-display">{f.title}</h3>
+              <p className="text-slate-500 leading-relaxed">{f.desc}</p>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -61,26 +76,40 @@ const HowItWorks = () => {
   ]
 
   return (
-    <section className="py-24 bg-slate-900 text-white overflow-hidden relative">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary-600/10 rounded-full blur-[120px]" />
+    <section className="py-32 bg-slate-900 text-white overflow-hidden relative">
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-600/10 rounded-full blur-[150px]" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-600/5 rounded-full blur-[150px]" />
+
       <div className="section-container relative z-10">
-        <div className="text-center mb-20">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
-          <p className="text-slate-400">A seamless flow from curiosity to creation.</p>
-        </div>
-        <div className="grid lg:grid-cols-3 gap-12 lg:gap-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-24"
+        >
+          <h2 className="heading-xl text-3xl md:text-5xl text-white mb-6">Designed for <span className="text-primary-400">Efficiency</span></h2>
+          <p className="text-slate-400 text-lg">A seamless flow from curiosity to creation.</p>
+        </motion.div>
+
+        <div className="grid lg:grid-cols-3 gap-16 lg:gap-12 relative">
           {steps.map((s, i) => (
-            <div key={i} className="relative">
-              {i < 2 && <div className="hidden lg:block absolute top-10 left-full w-full h-px bg-slate-800 z-0" />}
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.2 }}
+              className="relative group"
+            >
               <div className="relative z-10 flex flex-col items-center text-center">
-                <div className="w-20 h-20 rounded-full bg-slate-800 border-4 border-slate-700 flex items-center justify-center mb-6 shadow-xl">
-                  <s.icon className="w-8 h-8 text-primary-400" />
+                <div className="w-24 h-24 rounded-3xl bg-slate-800 border-2 border-slate-700 flex items-center justify-center mb-10 shadow-2xl group-hover:border-primary-500/50 group-hover:bg-slate-800/80 transition-all rotate-3 group-hover:rotate-0">
+                  <s.icon className="w-10 h-10 text-primary-400" />
                 </div>
-                <div className="text-xs font-bold text-primary-500 uppercase tracking-widest mb-2">Step {s.id}</div>
-                <h3 className="text-xl font-bold mb-3">{s.title}</h3>
-                <p className="text-slate-400 text-sm max-w-xs">{s.desc}</p>
+                <div className="text-sm font-bold text-primary-500 uppercase tracking-[0.3em] mb-4">Step {s.id}</div>
+                <h3 className="text-2xl font-bold mb-4 font-display">{s.title}</h3>
+                <p className="text-slate-400 leading-relaxed text-lg max-w-xs">{s.desc}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -99,37 +128,52 @@ const TopicsGrid = ({ onCategoryClick }) => {
   ]
 
   return (
-    <section id="topics" className="py-24 bg-white">
+    <section id="topics" className="py-32 bg-white">
       <div className="section-container">
-        <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-4">
-          <div className="max-w-xl">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Explore by Category</h2>
-            <p className="text-slate-500">Dive into specific domains to find curated learning resources and project kits.</p>
-          </div>
-          <button
-            onClick={() => onCategoryClick('')}
-            className="text-primary-600 font-bold flex items-center gap-2 hover:gap-3 transition-all"
+        <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="max-w-2xl"
           >
-            See all topics <ChevronRight className="w-4 h-4" />
-          </button>
+            <h2 className="heading-xl text-3xl md:text-5xl mb-6">Explore <span className="text-gradient">Categories</span></h2>
+            <p className="text-slate-500 text-lg font-medium">Dive into specific domains to find curated learning resources and project kits.</p>
+          </motion.div>
+          <motion.button
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            onClick={() => onCategoryClick('')}
+            className="btn-primary"
+          >
+            View All Resources
+            <ChevronRight className="w-5 h-5" />
+          </motion.button>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {topics.map((t, i) => (
-            <div
+            <motion.div
               key={i}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              whileHover={{ scale: 1.02 }}
               onClick={() => onCategoryClick(t.search)}
-              className="group glass-card p-4 rounded-[2.5rem] border-slate-100 hover:bg-slate-50 transition-all cursor-pointer"
+              className="group glass-panel p-6 rounded-[2.5rem] hover:bg-white hover:shadow-2xl hover:shadow-primary-100/30 transition-all cursor-pointer border border-slate-100"
             >
-              <div className="flex items-center gap-4">
-                <div className={`w-16 h-16 rounded-[1.75rem] flex items-center justify-center bg-slate-50 group-hover:bg-white transition-colors shadow-sm`}>
-                  <t.icon className="w-7 h-7 text-slate-700 group-hover:text-primary-600 transition-colors" />
+              <div className="flex items-center gap-6">
+                <div className="w-20 h-20 rounded-2xl flex items-center justify-center bg-slate-50 group-hover:bg-primary-50 transition-colors shadow-sm">
+                  <t.icon className="w-10 h-10 text-slate-700 group-hover:text-primary-600 transition-colors" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900">{t.title}</h3>
-                  <p className="text-xs text-slate-500">{t.count}</p>
+                  <h3 className="text-xl font-bold text-slate-900 font-display">{t.title}</h3>
+                  <p className="text-sm font-bold text-primary-500 uppercase tracking-widest mt-1">{t.count}</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -238,41 +282,59 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-slate-50 selection:bg-primary-100">
       <Navbar onNavigate={handleNavigate} currentView={view} />
 
-      {view === 'home' ? (
-        <main>
-          <Hero onSearch={handleSearch} />
-          <WhyEduIoT />
-          <Features />
-          <HowItWorks />
-          <TopicsGrid onCategoryClick={handleSearch} />
+      <main className="relative">
+        <AnimatePresence mode="wait">
+          {view === 'home' ? (
+            <motion.div
+              key="home"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <Hero onSearch={handleSearch} />
+              <WhyEduIoT />
+              <Features />
+              <HowItWorks />
+              <TopicsGrid onCategoryClick={handleSearch} />
 
-          {/* CTA Section */}
-          <section className="py-24">
-            <div className="section-container">
-              <div className="bg-primary-600 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-primary-200">
-                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-                <div className="relative z-10">
-                  <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Learn Better. Build Smarter.</h2>
-                  <p className="text-primary-100 text-lg mb-10 max-w-xl mx-auto">
-                    Start your IoT journey today with structured paths and beginner-friendly resources.
-                  </p>
-                  <button
-                    onClick={() => handleSearch('')}
-                    className="bg-white text-primary-600 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all active:scale-95"
-                  >
-                    Start Exploring
-                  </button>
+              {/* CTA Section */}
+              <section className="py-24">
+                <div className="section-container">
+                  <div className="bg-primary-600 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-primary-200">
+                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                    <div className="relative z-10">
+                      <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Learn Better. Build Smarter.</h2>
+                      <p className="text-primary-100 text-lg mb-10 max-w-xl mx-auto">
+                        Start your IoT journey today with structured paths and beginner-friendly resources.
+                      </p>
+                      <button
+                        onClick={() => handleSearch('')}
+                        className="bg-white text-primary-600 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all active:scale-95"
+                      >
+                        Start Exploring
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </section>
-        </main>
-      ) : (
-        <SearchResults query={searchQuery} onBack={handleBackToHome} />
-      )}
+              </section>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="results"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 0.3, ease: "circOut" }}
+            >
+              <SearchResults query={searchQuery} onBack={handleBackToHome} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
 
       <Footer onNavigate={handleNavigate} />
     </div>

@@ -1,61 +1,82 @@
 import React from 'react'
-import { AlertCircle, FileSearch, HardDrive, Lightbulb } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Brain, Cpu, Zap, GraduationCap } from 'lucide-react'
 
 const WhyEduIoT = () => {
-    const problems = [
+    const reasons = [
         {
-            title: "Information Overload",
-            description: "Too much content on the internet makes it hard to find exactly what a beginner needs.",
-            icon: AlertCircle,
-            color: "blue"
+            title: "Academic Focus",
+            desc: "Specially curated results for Engineering & Diploma students across technical streams.",
+            icon: Brain,
+            color: "from-blue-500 to-indigo-500"
         },
         {
-            title: "Complexity Barrier",
-            description: "Existing hardware documentation is often too technical or structured for academic beginners.",
-            icon: HardDrive,
-            color: "cyan"
+            title: "Hardware Agnostic",
+            desc: "From Arduino to ESP32 and Raspberry Pi, find projects for all platforms.",
+            icon: Cpu,
+            color: "from-cyan-500 to-blue-500"
         },
         {
-            title: "Fragmented Platforms",
-            description: "No single platform combines academic theory with practical IoT implementation.",
-            icon: FileSearch,
-            color: "indigo"
+            title: "Real-time Context",
+            desc: "Get instant Wikipedia summaries for broader technical background on any topic.",
+            icon: Zap,
+            color: "from-amber-500 to-orange-500"
         },
         {
-            title: "Innovation Block",
-            description: "Students struggle to find relevant and feasible project ideas for their final year.",
-            icon: Lightbulb,
-            color: "violet"
+            title: "Final Year Ready",
+            desc: "Explore hundreds of project ideas and ready-to-use learning kits.",
+            icon: GraduationCap,
+            color: "from-violet-500 to-purple-500"
         }
     ]
 
-    return (
-        <section className="bg-slate-50/50 py-24">
-            <div className="section-container">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Why EduIoT?</h2>
-                    <div className="w-20 h-1.5 bg-primary-600 mx-auto rounded-full mb-6" />
-                    <p className="text-slate-600 max-w-2xl mx-auto">
-                        We bridge the gap between technical complexity and educational clarity, making IoT accessible for every student.
-                    </p>
-                </div>
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+    }
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {problems.map((problem, index) => (
-                        <div
-                            key={index}
-                            className="glass-card p-8 rounded-3xl hover:translate-y-[-8px] transition-all duration-300 border-none ring-1 ring-slate-200/60"
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    }
+
+    return (
+        <section className="py-32 relative overflow-hidden bg-slate-50">
+            <div className="section-container relative z-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-center max-w-3xl mx-auto mb-20"
+                >
+                    <h2 className="heading-xl text-3xl md:text-5xl mb-6">Why Choose <span className="text-gradient">EduIoT</span>?</h2>
+                    <p className="text-slate-500 text-lg font-medium leading-relaxed">
+                        We bridge the gap between complex technical documentation and student learning.
+                    </p>
+                </motion.div>
+
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+                >
+                    {reasons.map((reason, i) => (
+                        <motion.div
+                            key={i}
+                            variants={itemVariants}
+                            whileHover={{ y: -5 }}
+                            className="glass-card p-10 rounded-[3rem] hover:shadow-2xl hover:shadow-primary-100/30 transition-all border-none"
                         >
-                            <div className={`w-14 h-14 rounded-2xl bg-${problem.color}-100 flex items-center justify-center mb-6`}>
-                                <problem.icon className={`w-7 h-7 text-${problem.color}-600`} />
+                            <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${reason.color} flex items-center justify-center mb-8 shadow-lg shadow-blue-200`}>
+                                <reason.icon className="w-8 h-8 text-white" />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">{problem.title}</h3>
-                            <p className="text-slate-600 leading-relaxed text-sm">
-                                {problem.description}
-                            </p>
-                        </div>
+                            <h3 className="text-2xl font-bold text-slate-900 mb-4 font-display">{reason.title}</h3>
+                            <p className="text-slate-500 leading-relaxed text-lg">{reason.desc}</p>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     )
